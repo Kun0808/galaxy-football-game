@@ -35,12 +35,53 @@ function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// ---------- 抽卡：按位置分别抽取 ----------
+// ---------- 抽卡：按位置分别抽取（分层控制概率） ----------
+// 分层逻辑：
+//   传奇层(legend)    — 每个位置最多1张，~40% 概率出一张
+//   精英层(rating≥90) — 每个位置最多1张，~35% 概率出一张
+//   普通层(其余)      — 填满剩余名额
+// 凑出"银河战舰"需要运气和策略，不会每次都轻松拿到高分阵容
 function drawPlayers() {
+  return drawPool();
+}
+
+// 公共抽卡逻辑（抽卡和刷新共用）
+function drawPool() {
   const result = {};
   for (const pos of POS_ORDER) {
     const pool = PLAYER_POOL.filter(p => p.pos === pos);
-    result[pos] = shuffle(pool).slice(0, POOL_SIZES[pos]);
+    const need = POOL_SIZES[pos];
+
+    const legends = shuffle(pool.filter(p => p.legend));
+    const elites  = shuffle(pool.filter(p => !p.legend && p.rating >= 90));
+    const normals = shuffle(pool.filter(p => !p.legend && p.rating < 90));
+
+    const drawn = [];
+
+    // --- 传奇层：~40% 概率出1张 ---
+    if (Math.random() < 0.40 && legends.length > 0) {
+      drawn.push(legends[0]);
+    }
+
+    // --- 精英层：~35% 概率出1张 ---
+    if (drawn.length < need && elites.length > 0 && Math.random() < 0.35) {
+      drawn.push(elites[0]);
+    }
+
+    // --- 普通层：填满剩余 ---
+    while (drawn.length < need && normals.length > 0) {
+      drawn.push(normals.shift());
+    }
+
+    // 如果普通层不够（小概率），用精英/传奇补
+    if (drawn.length < need) {
+      const leftover = shuffle([...legends.slice(1), ...elites.slice(1)]);
+      while (drawn.length < need && leftover.length > 0) {
+        drawn.push(leftover.shift());
+      }
+    }
+
+    result[pos] = shuffle(drawn);
   }
   return result;
 }
@@ -50,14 +91,11 @@ function refreshPosition(pos) {
   if (gameState.refreshUsed) return;
   if (!gameState.selectedFormation) return;
 
-  // 重新抽取该位置的球员
-  const pool = PLAYER_POOL.filter(p => p.pos === pos);
-  gameState.drawnPlayers[pos] = shuffle(pool).slice(0, POOL_SIZES[pos]);
-
-  // 清除该位置已选中的球员
+  // 重新抽取所有位置（分层抽卡），只替换被刷新的位置
+  const newDraw = drawPool();
+  gameState.drawnPlayers[pos] = newDraw[pos];
   gameState.selectedPlayers[pos] = [];
 
-  // 标记刷新已使用
   gameState.refreshUsed = true;
   gameState.refreshedPos = pos;
 
