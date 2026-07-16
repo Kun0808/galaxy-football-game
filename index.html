@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>银河战舰 — 足球经理人小游戏</title>
+  <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============ 开始界面 ============ -->
+    <div id="startScreen">
+      <h1>⚽ 银河战舰</h1>
+      <p class="subtitle">抽卡 · 组队 · 开赛 · 三步体验足球经理人</p>
+
+      <div class="features">
+        <div class="feature">
+          <span class="feature-icon">🎴</span>
+          <span class="feature-text">100+ 球星<br>五大联赛+传奇</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🛡️</span>
+          <span class="feature-text">按位置选人<br>每局一次刷新</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⚡</span>
+          <span class="feature-text">即时模拟<br>每局不到5分钟</span>
+        </div>
+      </div>
+
+      <input type="text" id="teamNameInput" class="team-name-input" placeholder="输入你的球队名称（可选）" maxlength="12">
+      <button id="btnStart" class="btn-primary">开始游戏</button>
+    </div>
+
+    <!-- ============ 游戏主界面 ============ -->
+    <div id="gameScreen" class="hidden">
+
+      <!-- 顶部状态栏 -->
+      <div class="top-bar">
+        <div class="team-info">
+          <span class="team-badge" id="teamBadge">我的球队</span>
+          <span class="formation-badge" id="formationBadge">请选择阵型</span>
+        </div>
+        <div class="rating-display">
+          <span class="chemistry-badge hidden" id="chemistryBadge">默契 +0%</span>
+          <div style="text-align:center;">
+            <div class="rating-number" id="ratingNumber">--</div>
+            <div class="rating-label">总评分</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 阵型 + 战术选择 -->
+      <div class="formation-selector" id="formationSelector"></div>
+      <div class="tactic-selector" id="tacticSelector"></div>
+
+      <!-- 位置标签页 + 刷新区域 -->
+      <div class="position-bar">
+        <div class="position-tabs" id="positionTabs"></div>
+        <div class="refresh-area" id="refreshArea"></div>
+      </div>
+
+      <!-- 球员卡池 + 阵型图 -->
+      <div class="cards-section">
+        <div class="player-pool">
+          <h3>
+            🎴 球员卡池
+            <span class="pool-count" id="poolCount">0/11</span>
+          </h3>
+          <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+        <div class="formation-panel">
+          <h3>🏟️ 阵型图</h3>
+          <div class="formation-pitch" id="formationPitch"></div>
+        </div>
+      </div>
+
+      <!-- 开赛按钮 -->
+      <div class="start-match-area">
+        <button id="btnStartMatch" class="btn-start-match" disabled>请先选择阵型</button>
+      </div>
+    </div>
+
+    <!-- ============ 比赛模拟动画 ============ -->
+    <div id="matchOverlay" class="hidden">
+      <div class="match-teams" id="matchTeams"></div>
+      <div class="match-score" id="matchScore">0 : 0</div>
+      <div class="match-timer" id="matchTimer">开球！</div>
+      <div class="match-events" id="matchEvents"></div>
+    </div>
+
+    <!-- ============ 结果弹窗 ============ -->
+    <div id="resultModal" class="hidden">
+      <div class="result-card">
+        <div class="result-title">全场比赛结束</div>
+        <div class="result-score" id="resultScore">0 : 0</div>
+        <div class="result-outcome" id="resultOutcome"></div>
+        <div class="result-detail" id="resultDetail"></div>
+        <div class="result-comment" id="resultComment"></div>
+        <div class="result-buttons">
+          <button id="btnPlayAgain" class="btn-primary">再来一局</button>
+          <button id="btnBackToMenu" class="btn-secondary">返回主菜单</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="players.js?v=3"></script>
+  <script src="game.js?v=3"></script>
+</body>
+</html>

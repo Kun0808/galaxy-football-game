@@ -1,0 +1,996 @@
+/* ============================================================
+   银河战舰 — 足球经理人小游戏
+   样式表
+   ============================================================ */
+
+/* ---------- 基础重置 ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-dark: #0a0e14;
+  --bg-card: #151b26;
+  --bg-card-hover: #1e2638;
+  --accent: #00d97e;
+  --accent-dim: #00a85e;
+  --accent-glow: rgba(0, 217, 126, 0.3);
+  --gold: #ffd700;
+  --gold-dim: #c9a700;
+  --red: #e84855;
+  --blue: #4a9eff;
+  --text: #e8eaed;
+  --text-dim: #8b95a7;
+  --text-faint: #5a6478;
+  --border: #2a3344;
+  --radius: 12px;
+  --transition: 0.2s ease;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---------- 背景纹理 ---------- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(0, 217, 126, 0.05), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(74, 158, 255, 0.05), transparent 50%),
+    radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.03), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ---------- 通用 ---------- */
+.hidden { display: none !important; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+}
+
+/* ---------- 开始界面 ---------- */
+#startScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+}
+
+#startScreen h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+#startScreen .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+
+#startScreen .features {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#startScreen .feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+#startScreen .feature-icon {
+  font-size: 2rem;
+}
+
+#startScreen .feature-text {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.team-name-input {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  color: var(--text);
+  width: 320px;
+  text-align: center;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+.team-name-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.team-name-input::placeholder {
+  color: var(--text-faint);
+}
+
+/* ---------- 按钮 ---------- */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+  color: #000;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 14px 40px;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px var(--accent-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 24px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+/* ---------- 游戏主界面 ---------- */
+#gameScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 顶部状态栏 */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.top-bar .team-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-bar .team-badge {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.top-bar .formation-badge {
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.top-bar .rating-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-bar .rating-number {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.top-bar .rating-label {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.top-bar .chemistry-badge {
+  background: rgba(0, 217, 126, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 阵型选择 */
+.formation-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.formation-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 28px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.formation-btn .formation-desc {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
+.formation-btn:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+}
+
+.formation-btn.active {
+  border-color: var(--accent);
+  background: rgba(0, 217, 126, 0.1);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* 战术选择 */
+.tactic-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.tactic-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 20px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tactic-btn:hover {
+  border-color: var(--blue);
+}
+
+.tactic-btn.active {
+  border-color: var(--blue);
+  background: rgba(74, 158, 255, 0.1);
+  color: var(--blue);
+}
+
+/* ---------- 位置选择栏（重构） ---------- */
+.position-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.position-tabs {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pos-tab {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-dark);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 6px;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.pos-tab:hover {
+  border-color: var(--text-faint);
+  background: var(--bg-card-hover);
+  color: var(--text);
+}
+
+.pos-tab.active {
+  border-color: var(--accent);
+  background: rgba(0, 217, 126, 0.12);
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.pos-tab.full {
+  border-color: var(--accent-dim);
+}
+
+.pos-tab-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.pos-tab-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pos-tab-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  line-height: 1;
+}
+
+.pos-tab.active .pos-tab-count {
+  color: var(--accent);
+}
+
+.pos-tab.full .pos-tab-count {
+  color: var(--accent);
+}
+
+/* 刷新徽章 */
+.pos-tab.refreshed::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--bg-card);
+}
+
+/* 刷新按钮区域 */
+.refresh-area {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.btn-refresh {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  color: #000;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 12px rgba(255, 215, 0, 0.25);
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.btn-refresh:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.45);
+}
+
+.btn-refresh:active {
+  transform: translateY(0);
+}
+
+.refresh-used {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.refresh-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* ---------- 球员卡牌区域 ---------- */
+.cards-section {
+  display: flex;
+  gap: 16px;
+}
+
+.player-pool {
+  flex: 1;
+}
+
+.player-pool h3 {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-pool h3 .pool-count {
+  background: var(--bg-card);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+/* 球员卡牌 */
+.player-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--league-color, var(--border));
+}
+
+.player-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.player-card.selected {
+  border-color: var(--accent);
+  background: rgba(0, 217, 126, 0.08);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.player-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.player-card .legend-tag {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 0.6rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  color: #000;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.player-card .card-pos {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.player-card .card-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin: 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-card .card-rating {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.player-card .card-club {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-card .card-meta {
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.player-card .card-league-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+/* ---------- 阵型图区域 ---------- */
+.formation-panel {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formation-panel h3 {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.formation-pitch {
+  background: linear-gradient(180deg, #0d2818, #0a1f12);
+  border: 2px solid #1a3d28;
+  border-radius: 8px;
+  padding: 12px 8px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-around;
+  gap: 4px;
+  position: relative;
+}
+
+.formation-pitch::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.formation-pitch::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.formation-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.formation-slot {
+  background: var(--bg-dark);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  min-width: 70px;
+  text-align: center;
+  font-size: 0.72rem;
+  transition: var(--transition);
+}
+
+.formation-slot.filled {
+  border: 1px solid var(--accent);
+  border-style: solid;
+  background: rgba(0, 217, 126, 0.08);
+}
+
+.formation-slot.filled .slot-name {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.formation-slot.filled .slot-rating {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.formation-slot.out-of-pos {
+  border-color: var(--red);
+  background: rgba(232, 72, 85, 0.08);
+}
+
+.formation-slot.out-of-pos .slot-rating::after {
+  content: ' ⚠';
+}
+
+.formation-slot .slot-pos {
+  font-size: 0.6rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.formation-slot .slot-empty {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* ---------- 开赛按钮 ---------- */
+.start-match-area {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.btn-start-match {
+  background: linear-gradient(135deg, var(--red), #c0392b);
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.4rem;
+  padding: 16px 60px;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  box-shadow: 0 4px 30px rgba(232, 72, 85, 0.4);
+  animation: pulse 2s infinite;
+}
+
+.btn-start-match:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 40px rgba(232, 72, 85, 0.6);
+}
+
+.btn-start-match:disabled {
+  animation: none;
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 30px rgba(232, 72, 85, 0.3); }
+  50% { box-shadow: 0 4px 40px rgba(232, 72, 85, 0.6); }
+}
+
+/* ---------- 比赛模拟动画 ---------- */
+#matchOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 20, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  gap: 30px;
+}
+
+.match-teams {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.match-team {
+  text-align: center;
+  min-width: 200px;
+}
+
+.match-team .team-name-label {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.match-team .team-rating-label {
+  font-size: 0.8rem;
+  color: var(--gold);
+}
+
+.match-vs {
+  font-size: 2rem;
+  color: var(--red);
+  font-weight: 900;
+}
+
+.match-score {
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 10px;
+  min-height: 80px;
+}
+
+.match-timer {
+  font-size: 1rem;
+  color: var(--accent);
+  font-family: 'Courier New', monospace;
+}
+
+.match-events {
+  max-width: 500px;
+  text-align: center;
+  min-height: 30px;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+/* ---------- 结果弹窗 ---------- */
+#resultModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 20, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.result-card .result-title {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.result-card .result-score {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 10px 0;
+}
+
+.result-card .result-score .winner-score {
+  color: var(--accent);
+}
+
+.result-card .result-score .loser-score {
+  color: var(--text-dim);
+}
+
+.result-card .result-outcome {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.result-card .result-outcome.win { color: var(--accent); }
+.result-card .result-outcome.lose { color: var(--red); }
+.result-card .result-outcome.draw { color: var(--gold); }
+
+.result-card .result-detail {
+  background: var(--bg-dark);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.result-card .result-detail .detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.result-card .result-detail .detail-row:last-child {
+  border-bottom: none;
+}
+
+.result-card .result-detail .detail-label {
+  color: var(--text-dim);
+}
+
+.result-card .result-detail .detail-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.result-card .result-comment {
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+
+.result-card .result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ---------- 抽卡动画 ---------- */
+.card-draw {
+  animation: cardReveal 0.4s ease backwards;
+}
+
+@keyframes cardReveal {
+  from { transform: scale(0.5) rotateY(90deg); opacity: 0; }
+  to { transform: scale(1) rotateY(0); opacity: 1; }
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 900px) {
+  .cards-section {
+    flex-direction: column;
+  }
+
+  .formation-panel {
+    width: 100%;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  #startScreen h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .top-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .position-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .position-tabs {
+    flex-wrap: wrap;
+  }
+
+  .pos-tab {
+    flex: 1 1 40%;
+  }
+
+  .refresh-area {
+    justify-content: center;
+  }
+
+  .match-teams {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .match-vs {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
+}
